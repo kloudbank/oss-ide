@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  user01
+  namespace: ide
+  labels:
+    app:  user01
+spec:
+  selector:
+    matchLabels:
+      app: user01
+  replicas: 1
+  strategy:
+    # rollingUpdate:
+    #   maxSurge: 25%
+    #   maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app:  user01
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      initContainers:
+        - name: init-extensions
+          image: nogada/code-server-extensions:v0.2
+          command: ["cp", "-R", "/home/init/extensions", "/home/coder/vscode/code-server/extensions"]
+          volumeMounts:
+            - mountPath: /home/coder/vscode
+              name: xdg-data-home
+      containers:
+      - name:  ide
+        image:  nogada/code-server:v0.1
+        # resources:
+        #   requests:
+        #     cpu: 100m
+        #     memory: 100Mi
+        #   limits:
+        #     cpu: 100m
+        #     memory: 100Mi
+        # livenessProbe:
+        #   tcpSocket:
+        #     port: 80
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 5
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
+        # readinessProbe:
+        #   httpGet:
+        #     path: /_status/healthz
+        #     port: 80
+        #   initialDelaySeconds: 5
+        #   timeoutSeconds: 2
+        #   successThreshold: 1
+        #   failureThreshold: 3
+        #   periodSeconds: 10
+        env:
+        - name: XDG_DATA_HOME
+          value: /home/coder/vscode
+        ports:
+        - containerPort:  9999
+        volumeMounts:
+        - name: xdg-data-home
+          mountPath: /home/coder/vscode
+        - name: workspace
+          mountPath: /home/coder/workspace
+        # - name: config
+        #   mountPath: /home/coder/.config/code-server
+        #   subPath: config.yaml
+      volumes:
+        # - name: config
+        #   configMap:
+        #     name: config
+        - name: xdg-data-home
+          persistentVolumeClaim:
+            claimName: xdg-data-user01
+        - name: workspace
+          persistentVolumeClaim:
+            claimName: workspace-user01
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user01
+  namespace: ide
+spec:
+  selector:
+    app: user01
+  type: ClusterIP
+  ports:
+  - name: user01
+    protocol: TCP
+    port: 9999
+    targetPort: 9999
+    # If you set the `spec.type` field to `NodePort` and you want a specific port number,
+    # you can specify a value in the `spec.ports[*].nodePort` field.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user01-debug
+  namespace: ide
+spec:
+  selector:
+    app: user01
+  type: ClusterIP
+  ports:
+  - name: user01
+    protocol: TCP
+    port: 8080
+    targetPort: 8080

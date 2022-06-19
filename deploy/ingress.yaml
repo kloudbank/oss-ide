@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: user01
+  namespace: ide
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: user01.ide.kubepia.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: user01
+            port:
+              number: 9999
+  - host: user01-8080.ide.kubepia.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: user01-debug
+            port:
+              number: 8080
