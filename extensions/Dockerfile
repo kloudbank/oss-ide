@@ -1,5 +1,8 @@
-FROM busybox:latest
+FROM ubuntu:20.04
 
+
+RUN useradd -m coder --uid=1000
 USER 1000
 ENV USER=coder
-COPY ./code-server/extensions /extensions
+WORKDIR /home/coder
+COPY --chown=1000 ./code-server/extensions ./extensions
