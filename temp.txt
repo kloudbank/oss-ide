@@ -1,0 +1,1 @@
+az aks get-credentials --resource-group ski-cloudide-dev-rg  --name ski-cloudide-dev-aks
