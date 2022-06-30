@@ -41,5 +41,32 @@ RUN echo "export PATH=/usr/local/lib/nodejs/node-v14.14.0-linux-x64/bin:$PATH" >
 
 # install maven
 RUN sudo apt install -y maven
+
+# install azure cli
+RUN sudo bash -c 'curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash '
+
+# install kubectl
+RUN sudo bash -c 'sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg'
+RUN sudo bash -c 'echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list'
+RUN sudo apt-get update
+RUN sudo apt-get install -y kubectl
+RUN alias k=kubectl
+
+# install util
+RUN sudo apt install -y httpie
+RUN sudo apt install -y dnsutils
+RUN sudo apt install -y net-tools
+RUN sudo bash -c 'sudo wget -O- https://bit.ly/glances | sudo /bin/bash'
+RUN sudo apt install -y vim
+RUN sudo apt install -y zsh
+RUN sudo apt install -y netcat
+RUN sudo apt install -y traceroute
+
+
+
+
+
+
 EXPOSE 9999
+
 ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:9999", "."]
