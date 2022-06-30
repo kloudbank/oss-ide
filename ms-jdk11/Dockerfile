@@ -28,6 +28,8 @@ WORKDIR /home/coder/workspace
 # intall python 3.8
 RUN sudo apt update
 RUN sudo apt install -y python3
+RUN sudo apt install -y python3-pip
+RUN sudo apt install -y python3-venv
 RUN sudo bash -c 'echo "alias python=python3" >> /etc/bash.bashrc'
 RUN sudo bash -c 'echo "alias py=python3" >> /etc/bash.bashrc'
 
