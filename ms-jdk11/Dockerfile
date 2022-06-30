@@ -50,13 +50,12 @@ RUN sudo bash -c 'sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyrin
 RUN sudo bash -c 'echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list'
 RUN sudo apt-get update
 RUN sudo apt-get install -y kubectl
-RUN alias k=kubectl
+RUN sudo bash -c 'echo "alias k=kubectl" >> /etc/bash.bashrc'
 
 # install util
 RUN sudo apt install -y httpie
 RUN sudo apt install -y dnsutils
 RUN sudo apt install -y net-tools
-RUN sudo bash -c 'sudo wget -O- https://bit.ly/glances | sudo /bin/bash'
 RUN sudo apt install -y vim
 RUN sudo apt install -y zsh
 RUN sudo apt install -y netcat
