@@ -66,6 +66,10 @@ RUN sudo apt install -y netcat
 RUN sudo apt install -y traceroute
 
 
+# install mariadb tool
+RUN sudo apt-get install -y libmariadb3 libmariadb-dev
+
+
 
 
 
