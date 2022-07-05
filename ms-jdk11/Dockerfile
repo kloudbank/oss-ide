@@ -32,6 +32,8 @@ RUN sudo apt install -y python3-pip
 RUN sudo apt install -y python3-venv
 RUN sudo bash -c 'echo "alias python=python3" >> /etc/bash.bashrc'
 RUN sudo bash -c 'echo "alias py=python3" >> /etc/bash.bashrc'
+RUN sudo bash -c 'pip install virtualenv'
+RUN echo "export PATH=/home/coder/.local/bin:$PATH" >> ~/.bashrc
 
 
 
