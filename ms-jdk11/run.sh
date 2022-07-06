@@ -8,7 +8,7 @@ docker run -d \
   -p 8080:8080 \
   -e PASSWORD=password \
   --name kloudide \
-  nogada/code-server:v0.6
+  nogada/code-server:v1.5
 
 
 docker run -d \

@@ -10,9 +10,11 @@ RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor 
 RUN sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
 RUN sudo wget -q https://packages.microsoft.com/config/debian/9/prod.list -O /etc/apt/sources.list.d/microsoft-prod.list
 RUN sudo apt update
-RUN sudo apt-get install -y apt-transport-https
-RUN sudo apt-get update
-RUN sudo apt-get install -y msopenjdk-11
+RUN sudo apt install -y apt-transport-https
+RUN sudo apt update
+RUN sudo apt install -y msopenjdk-11
+
+RUN sudo apt install -y openjdk-17-jdk
 
 
 
